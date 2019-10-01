@@ -28,10 +28,10 @@ namespace performance_joins
             Console.Read();
         }
 
-        static void ProcessData(List<Worker> workers, List<Building> buildings)
+        static HashSet<Building> ProcessData(List<Worker> workers, List<Building> buildings)
         {
             var employedWorkers = workers.Where(n => n.IsEmployed == true); // O(n)
-
+            HashSet<Building> matchedBuildings = new HashSet<Building>();
             foreach (var building in buildings) // O(n)
             {
                 foreach (var worker in employedWorkers) //O(n)
@@ -39,10 +39,11 @@ namespace performance_joins
                     if (building.Id == worker.BuildingId)
                     {
                         building.Workers.Add(worker.Id);
-                        MatchedBuildings.Add(building);
+                        matchedBuildings.Add(building);
                     }
                 }
-            } // TOTAL: O(n^2)
+            }
+            return matchedBuildings; // TOTAL: O(n^2)
         }
 
         static HashSet<Building> ProcessData2(List<Worker> workers, List<Building> buildings)
@@ -78,11 +79,11 @@ namespace performance_joins
             return matchedBuildings; // TOTAL: O(n)
         }
 
-        static void MeasureTime(Action<List<Worker>, List<Building>> processingMethod)
+        static void MeasureTime(Func<List<Worker>, List<Building>, HashSet<Building>> processingMethod)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            processingMethod(Workers, Buildings);
+            MatchedBuildings = processingMethod(Workers, Buildings);
             stopwatch.Stop();
             Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
         }
