@@ -1,8 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using BenchmarkDotNet.Running;
+﻿using BenchmarkDotNet.Running;
 
-namespace performance_joins
+namespace performance_joins.benchmarks
 {
     class Program
     {
